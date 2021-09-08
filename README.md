@@ -4,6 +4,10 @@ To install modules run:
 ======================
 npm install
 
+To install packages
+======================
+npm install express cors morgan --save
+
 To run the project use
 ======================
 npm start
