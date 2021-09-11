@@ -6,37 +6,24 @@ const morgan = require('morgan');
 const cors = require('cors');
 const index = require('./routes/index');
 const hello = require('./routes/hello');
+const save = require('./routes/save');
+const docs = require('./routes/docs');
+const fs = require("fs");
+const path = require("path");
 
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
 
-app.use('/', index);
+app.use('/save', save);
+app.use('/getdocs', docs);
 app.use('/hello', hello);
 
-app.use(express.json());
-// This is middleware called for all routes.
-// Middleware takes three parameters.
-app.use((req, res, next) => {
-    console.log(req.method);
-    console.log(req.path);
-    next();
-});
-
-
-app.use(cors());
 // don't show the log when it is test
 if (process.env.NODE_ENV !== 'test') {
     // use morgan to log at command line
     app.use(morgan('combined')); // 'combined' outputs the Apache style LOGs
 }
-
-// Add routes for 404 and error handling
-// Catch 404 and forward to error handler
-// Put this last
-app.use((req, res, next) => {
-    var err = new Error("Not Found");
-    err.status = 404;
-    next(err);
-});
 
 // Testing routes with method
 app.get("/user", (req, res) => {
@@ -76,6 +63,7 @@ app.get("/", (req, res) => {
 
     res.json(data);
 });
+
 
 app.get("/hello/:msg", (req, res) => {
     const data = {
