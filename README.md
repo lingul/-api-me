@@ -1,6 +1,8 @@
 ## How to install modules:
-npm install express cors morgan --save
-npm install -g nodemon
+npm install express cors morgan --save,
+
+npm install -g nodemon,
+
 npm install body-parser
 
 ## How to start:
