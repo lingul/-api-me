@@ -8,6 +8,7 @@ const index = require('./routes/index');
 const hello = require('./routes/hello');
 const save = require('./routes/save');
 const docs = require('./routes/docs');
+const docsdata = require('./routes/data');
 const fs = require("fs");
 const path = require("path");
 
@@ -17,6 +18,7 @@ app.use(cors());
 
 app.use('/save', save);
 app.use('/getdocs', docs);
+app.use('/getdata', docsdata);
 app.use('/hello', hello);
 
 // don't show the log when it is test

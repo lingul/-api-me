@@ -14,9 +14,16 @@ module.exports = {
         const client  = await mongo.connect(dsn);
         const db = await client.db();
         const col = await db.collection(colName);
+        
+        const res = await col.find({filename: setOfData[0].filename}, { projection: { _id: 1} }).toArray();
 
+        if (res.length === 0) {
+            await col.insertMany(setOfData);
+        } else {
+            await col.updateOne({filename: setOfData[0].filename}, {$set: {data: setOfData[0].data}});
+        }
+        
         //await col.deleteMany();
-        await col.insertMany(setOfData);
 
         await client.close();
     }
