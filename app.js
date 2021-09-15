@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const port = 1337;
+const port = process.env.PORT || 1337;
 const bodyParser = require("body-parser");
 const morgan = require('morgan');
 const cors = require('cors');
@@ -11,7 +11,6 @@ const docs = require('./routes/docs');
 const docsdata = require('./routes/data');
 const fs = require("fs");
 const path = require("path");
-
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
@@ -37,7 +36,7 @@ app.get("/user", (req, res) => {
 });
 
 app.post("/user", (req, res) => {
-    res.status(201).json({
+    res.status(200).json({
         data: {
             msg: "Got a POST request, sending back Created"
         }
@@ -79,3 +78,5 @@ app.get("/hello/:msg", (req, res) => {
 
 // Start up server
 app.listen(port, () => console.log(`Example API listening on port ${port}!`));
+
+module.exports = app;

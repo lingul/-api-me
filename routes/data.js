@@ -20,6 +20,7 @@ router.get('/', (req, res, next) => {
             parse_res = JSON.parse(JSON.stringify(await getData()));
         } catch (err) {
             console.log(err);
+            //res.send({errormess: err});
         }
         res.send({mess: parse_res});
     })
