@@ -1,25 +1,8 @@
 language: node_js
-
+services: mongodb
 node_js:
-    - "node"
-    - "12"
-    - "10"
-
-sudo: false
-
-git:
-    submodules: false
-
-env:
-  - DB=postgres
-  - PACKAGE_VERSION="1.0.*"
-
-before_script:
-    - npm install
-
-script:
-    - npm test
-
-after_success:
-    - npm run report-coveralls
-    - npm run report-codecov
+  - 14
+  - 13
+  - 12
+  - 11
+  - 10
