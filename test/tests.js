@@ -26,7 +26,7 @@ describe("POST /Save", () => {
             .set('content-type', 'application/x-www-form-urlencoded')
             .send({ data: '<p>linnea5</p>\n', filename: 'linnea5.txt' })
             .end((err, res) => {
-                res.should.have.status(201);
+                expect(res).to.have.status(201);
                 res.should.be.an("object");
 
                 done();
@@ -65,7 +65,7 @@ describe('Data', () => {
             chai.request(server)
                 .get('/getdata')
                 .end((err, res) => {
-                    res.should.have.status(200);
+                    expect(res).to.have.status(200);
 
                     done();
                 });
