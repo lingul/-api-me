@@ -1,9 +1,9 @@
 [![Build Status](https://scrutinizer-ci.com/g/lingul/api-me/badges/build.png?b=master)](https://scrutinizer-ci.com/g/lingul/api-me/build-status/master)
 
 ## How to install modules:
-npm install express cors morgan --save,
+npm install express cors morgan --save
 
-npm install -g nodemon,
+npm install -g nodemon
 
 npm install body-parser
 
