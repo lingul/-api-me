@@ -5,10 +5,10 @@ node_js:
 
 sudo: false
 
+services: mongodb
+
 git:
     submodules: false
-
-services: mongodb
 
 before_script:
     - npm install

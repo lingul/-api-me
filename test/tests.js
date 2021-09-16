@@ -11,6 +11,7 @@ const expect = chai.expect;
 const chaiHttp = require('chai-http');
 const assert = require('assert');
 const server = require('../app.js');
+const { exit } = require('process');
 
 chai.use(chaiHttp);
 

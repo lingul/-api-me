@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">27.27% </span>
+                <span class="strong">90.91% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>3/11</span>
+                <span class='fraction'>10/11</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>1/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">27.27% </span>
+                <span class="strong">90.91% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>3/11</span>
+                <span class='fraction'>10/11</span>
             </div>
         
             
@@ -55,7 +55,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -100,21 +100,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
@@ -129,22 +129,22 @@ const dsn =  "mongodb://localhost:27017/mumin";
 &nbsp;
 &nbsp;
 module.exports = {
-    insert_db: <span class="fstat-no" title="function not covered" >as</span>ync function(colName, setOfData) {
-        const client  = <span class="cstat-no" title="statement not covered" >await mongo.connect(dsn);</span>
-        const db = <span class="cstat-no" title="statement not covered" >await client.db();</span>
-        const col = <span class="cstat-no" title="statement not covered" >await db.collection(colName);</span>
+    insert_db: async function(colName, setOfData) {
+        const client  = await mongo.connect(dsn);
+        const db = await client.db();
+        const col = await db.collection(colName);
         
-        const res = <span class="cstat-no" title="statement not covered" >await col.find({filename: setOfData[0].filename}, { projection: { _id: 1} }).toArray();</span>
+        const res = await col.find({filename: setOfData[0].filename}, { projection: { _id: 1} }).toArray();
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        if (res.length === 0) {</span>
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (res.length === 0) {
 <span class="cstat-no" title="statement not covered" >            await col.insertMany(setOfData);</span>
         } else {
-<span class="cstat-no" title="statement not covered" >            await col.updateOne({filename: setOfData[0].filename}, {$set: {data: setOfData[0].data}});</span>
+            await col.updateOne({filename: setOfData[0].filename}, {$set: {data: setOfData[0].data}});
         }
         
         //await col.deleteMany();
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        await client.close();</span>
+        await client.close();
     }
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -154,7 +154,7 @@ module.exports = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Wed Sep 15 2021 18:57:40 GMT+0200 (GMT+02:00)
+                at Thu Sep 16 2021 12:18:24 GMT+0200 (GMT+02:00)
             </div>
         </div>
         <script src="../../prettify.js"></script>

@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">38.1% </span>
+                <span class="strong">95.24% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>8/21</span>
+                <span class='fraction'>20/21</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/3</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">38.1% </span>
+                <span class="strong">95.24% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>8/21</span>
+                <span class='fraction'>20/21</span>
             </div>
         
             
@@ -55,7 +55,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -109,25 +109,25 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -145,26 +145,26 @@ const dsn = process.env.DBWEBB_DSN || "mongodb://localhost:27017/mumin";
 &nbsp;
 const limit1 = 30;
 &nbsp;
-router.get('/', <span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {
-    let id = <span class="cstat-no" title="statement not covered" >req.query.id;</span>
-    let parse_res = <span class="cstat-no" title="statement not covered" >[];</span>
-<span class="cstat-no" title="statement not covered" >    (<span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >        try {</span>
-<span class="cstat-no" title="statement not covered" >            parse_res = JSON.parse(JSON.stringify(await getData()));</span>
+router.get('/', (req, res, next) =&gt; {
+    let id = req.query.id;
+    let parse_res = [];
+    (async () =&gt; {
+        try {
+            parse_res = JSON.parse(JSON.stringify(await getData()));
         } catch (err) {
 <span class="cstat-no" title="statement not covered" >            console.log(err);</span>
             //res.send({errormess: err});
         }
-<span class="cstat-no" title="statement not covered" >        res.send({mess: parse_res});</span>
+        res.send({mess: parse_res});
     })
     ();
-    async function <span class="fstat-no" title="function not covered" >getData(</span>) {
-        const client  = <span class="cstat-no" title="statement not covered" >await mongo.connect(dsn);</span>
-        const db = <span class="cstat-no" title="statement not covered" >await client.db();</span>
-        const col = <span class="cstat-no" title="statement not covered" >await db.collection("crowd");</span>
-        const res = <span class="cstat-no" title="statement not covered" >await col.find({ _id : new ObjectID(id) }, { projection: { data: 1, filename: 1} }).limit(limit1).toArray();</span>
-<span class="cstat-no" title="statement not covered" >        await client.close();</span>
-<span class="cstat-no" title="statement not covered" >        return res;</span>
+    async function getData() {
+        const client  = await mongo.connect(dsn);
+        const db = await client.db();
+        const col = await db.collection("crowd");
+        const res = await col.find({ _id : new ObjectID(id) }, { projection: { data: 1, filename: 1} }).limit(limit1).toArray();
+        await client.close();
+        return res;
     }
 });
 &nbsp;
@@ -175,7 +175,7 @@ module.exports = router;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Wed Sep 15 2021 18:57:40 GMT+0200 (GMT+02:00)
+                at Thu Sep 16 2021 12:18:24 GMT+0200 (GMT+02:00)
             </div>
         </div>
         <script src="../../prettify.js"></script>

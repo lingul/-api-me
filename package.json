@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node app.js",
     "production": "NODE_ENV='production' node app.js",
-    "test": "nyc --reporter=html --reporter=text mocha 'test/**/*.js'",
+    "test": "nyc --reporter=html --reporter=text mocha --exit 'test/**/*.js'",
     "coverage": "node_modules/.bin/nyc npm test",
     "coveralls": "node_modules/.bin/nyc report --reporter=text-lcov | coveralls -v"
   },
