@@ -1,3 +1,8 @@
+// MongoDB
+const mongo = require("mongodb").MongoClient;
+const dsn =  "mongodb://localhost:27017/mumin";
+const ObjectID = require('mongodb').ObjectId;
+
 const express = require("express");
 const app = express();
 const port = process.env.PORT || 1337;
@@ -11,6 +16,53 @@ const docs = require('./routes/docs');
 const docsdata = require('./routes/data');
 const fs = require("fs");
 const path = require("path");
+const http = require('http');
+const server = http.createServer(app);
+const io = require("socket.io")(server, {
+    cors: {
+      origin: "http://localhost:3000",
+      methods: ["GET", "POST"]
+    }
+});
+
+async function getFileContents(id) {
+    const client  = await mongo.connect(dsn);
+    const db = await client.db();
+    const col = await db.collection("crowd");
+    const res = await col.find(
+        { _id : new ObjectID(id) },
+        { projection: { data: 1, filename: 1} }
+    ).toArray();
+
+    await client.close();
+    return res.length ? res[0] : null;
+}
+
+//Handle incoming requests and send the content back
+//to those that share the same room (channel)
+io.sockets.on('connection', function (socket) {
+    console.log("the socket id is: " + socket.id);
+    socket.on('create', function (room) {
+      console.log("create; " + room);
+      socket.join(room);
+      (async function () {
+        const f = await getFileContents(room);
+        f && socket.emit("created", f);
+      })();
+    });
+
+    socket.on("update", function (room, data) {
+        console.log(room, data);
+        socket.to(room).emit("updated", data);
+        //send to mongo
+    });
+
+    socket.on('leave', function (room) {
+        console.log("leave; " + room);
+        socket.leave(room);
+      });
+  });
+  
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
@@ -76,7 +128,7 @@ app.get("/hello/:msg", (req, res) => {
     res.json(data);
 });
 
-// Start up server
-app.listen(port, () => console.log(`Example API listening on port ${port}!`));
+// Start up server with websocket and REST GET and POST
+server.listen(port, () => console.log(`Example API listening on port ${port}!`));
 
 module.exports = app;
