@@ -5,11 +5,16 @@
 
 var express = require('express');
 var router = express.Router();
+//var config = require("./../db/config.json");
+var dbmaneger = require("./../src/dbmanager.js");
 
-const mongo = require("mongodb").MongoClient;
-const dsn = process.env.DBWEBB_DSN || "mongodb://localhost:27017/mumin";
+// MongoDB
+const config = require("./../db/config.json");
+const { MongoClient } = require("mongodb");
+const dsn = require("../db/database");
+const mongo = new MongoClient(dsn, { useNewUrlParser: true, useUnifiedTopology: true });
 
-const limit1 = 30;
+//const limit1 = 30;
 
 router.get('/', (req, res, next) => {
     let parse_res;
@@ -23,10 +28,9 @@ router.get('/', (req, res, next) => {
     })
     ();
     async function findInCollection() {
-        const client  = await mongo.connect(dsn);
-        const db = await client.db();
-        const col = await db.collection("crowd");
-        const res = await col.find({}, { projection: { _id: 1, filename: 1} }).limit(limit1).toArray();
+        const client = await mongo.connect();
+        const col = await client.db("mumin").collection("crowd");
+        const res = await col.find({}, { projection: { _id: 1, filename: 1} }).toArray();
         await client.close();
         return res;
     }

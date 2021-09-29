@@ -1,7 +1,8 @@
 // MongoDB
-const mongo = require("mongodb").MongoClient;
-const dsn =  "mongodb://localhost:27017/mumin";
+const { MongoClient } = require("mongodb");
+const dsn = require("./db/database");
 const ObjectID = require('mongodb').ObjectId;
+const mongo = new MongoClient(dsn, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const express = require("express");
 const app = express();
@@ -18,17 +19,19 @@ const fs = require("fs");
 const path = require("path");
 const http = require('http');
 const server = http.createServer(app);
+//const ENDPOINT = "https://jsramverk-editor-ligm19.azurewebsites.net";
+const ENDPOINT = "http://localhost:1337";
 const io = require("socket.io")(server, {
     cors: {
-      origin: "http://localhost:3000",
+      origin: ENDPOINT,
       methods: ["GET", "POST"]
     }
 });
 
 async function getFileContents(id) {
-    const client  = await mongo.connect(dsn);
-    const db = await client.db();
-    const col = await db.collection("crowd");
+    const client  = await mongo.connect();
+    const col = await client.db("mumin").collection("crowd");
+    //const col = await db.collection("crowd");
     const res = await col.find(
         { _id : new ObjectID(id) },
         { projection: { data: 1, filename: 1} }
@@ -38,8 +41,6 @@ async function getFileContents(id) {
     return res.length ? res[0] : null;
 }
 
-//Handle incoming requests and send the content back
-//to those that share the same room (channel)
 io.sockets.on('connection', function (socket) {
     console.log("the socket id is: " + socket.id);
     socket.on('create', function (room) {

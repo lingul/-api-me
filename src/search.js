@@ -4,7 +4,7 @@
 "use strict";
 
 const mongo = require("mongodb").MongoClient;
-const dsn =  process.env.DBWEBB_DSN || "mongodb://localhost:27017/mumin";
+const dsn = require("../db/database");
 
 // Find documents for this living in...
 const criteria1 = {

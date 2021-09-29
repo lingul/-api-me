@@ -6,14 +6,17 @@
 var express = require('express');
 var router = express.Router();
 
-const mongo = require("mongodb").MongoClient;
-const ObjectID = require('mongodb').ObjectId;
-const dsn = process.env.DBWEBB_DSN || "mongodb://localhost:27017/mumin";
-
+// MongoDB
+const config = require("./../db/config.json");
+const { MongoClient } = require("mongodb");
+const dsn = require("../db/database");
+const mongo = new MongoClient(dsn, { useNewUrlParser: true, useUnifiedTopology: true });
+const ObjectId = require('mongodb').ObjectId;
 const limit1 = 30;
 
 router.get('/', (req, res, next) => {
     let id = req.query.id;
+    console.log(id);
     let parse_res = [];
     (async () => {
         try {
@@ -26,10 +29,9 @@ router.get('/', (req, res, next) => {
     })
     ();
     async function getData() {
-        const client  = await mongo.connect(dsn);
-        const db = await client.db();
-        const col = await db.collection("crowd");
-        const res = await col.find({ _id : new ObjectID(id) }, { projection: { data: 1, filename: 1} }).limit(limit1).toArray();
+        const client = await mongo.connect();
+        const col = await client.db("mumin").collection("crowd");
+        const res = await col.find({ _id: new ObjectId(id) }, { projection: { data: 1, filename: 1} }).limit(limit1).toArray();
         await client.close();
         return res;
     }

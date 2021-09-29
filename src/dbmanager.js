@@ -4,16 +4,16 @@
 "use strict";
 
 // MongoDB
-const mongo = require("mongodb").MongoClient;
-const dsn =  "mongodb://localhost:27017/mumin";
-//const dsn =  process.env.DBWEBB_DSN || "mongodb://localhost:27017/mumin";
+const config = require("./../db/config.json");
+const { MongoClient } = require("mongodb");
+const dsn = require("../db/database");
+const mongo = new MongoClient(dsn, { useNewUrlParser: true, useUnifiedTopology: true });
 
 
 module.exports = {
     insert_db: async function(colName, setOfData) {
-        const client  = await mongo.connect(dsn);
-        const db = await client.db();
-        const col = await db.collection(colName);
+        const client = await mongo.connect();
+        const col = await client.db("mumin").collection(colName);
         
         const res = await col.find({filename: setOfData[0].filename}, { projection: { _id: 1} }).toArray();
 
