@@ -15,6 +15,9 @@ const hello = require('./routes/hello');
 const save = require('./routes/save');
 const docs = require('./routes/docs');
 const docsdata = require('./routes/data');
+const routeServerRegister = require("./routes/register.js");
+const routeServerLogin = require("./routes/login.js");
+
 const fs = require("fs");
 const path = require("path");
 const http = require('http');
@@ -72,6 +75,8 @@ app.use('/save', save);
 app.use('/getdocs', docs);
 app.use('/getdata', docsdata);
 app.use('/hello', hello);
+app.use("/register", routeServerRegister);
+app.use("/login", routeServerLogin);
 
 // don't show the log when it is test
 if (process.env.NODE_ENV !== 'test') {
@@ -80,33 +85,6 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 // Testing routes with method
-app.get("/user", (req, res) => {
-    res.json({
-        data: {
-            msg: "Got a GET request"
-        }
-    });
-});
-
-app.post("/user", (req, res) => {
-    res.status(200).json({
-        data: {
-            msg: "Got a POST request, sending back Created"
-        }
-    });
-});
-
-
-app.put("/user", (req, res) => {
-    // PUT requests should return 204 No Content
-    res.status(204).send();
-});
-
-app.delete("/user", (req, res) => {
-    // DELETE requests should return 204 No Content
-    res.status(204).send();
-});
-
 // Add a route
 app.get("/", (req, res) => {
     const data = {
