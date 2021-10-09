@@ -6,6 +6,8 @@ const mongo = new MongoClient(dsn, { useNewUrlParser: true, useUnifiedTopology: 
 
 const express = require("express");
 const app = express();
+const expessjwt = require('express-jwt');
+const jwt = require('jsonwebtoken');
 const port = process.env.PORT || 1337;
 const bodyParser = require("body-parser");
 const morgan = require('morgan');
@@ -24,6 +26,16 @@ const http = require('http');
 const server = http.createServer(app);
 //const ENDPOINT = "https://jsramverk-editor-ligm19.azurewebsites.net";
 const ENDPOINT = "http://localhost:1337";
+let config;
+
+try {
+    config = require('./config/config.js');
+} catch (error) {
+    console.error(error);
+}
+
+const jwtSecret = config.jwtSecret;
+
 const io = require("socket.io")(server, {
     cors: {
       origin: ENDPOINT,
@@ -46,13 +58,23 @@ async function getFileContents(id) {
 
 io.sockets.on('connection', function (socket) {
     console.log("the socket id is: " + socket.id);
+    socket.on('auth', function (token) {
+        console.log('auth', token);
+        jwt.verify(token, jwtSecret, function(err, decoded) {
+            if(!err) {
+                socket.auth_token=decoded;
+            }
+        });
+    })
     socket.on('create', function (room) {
-      console.log("create; " + room);
-      socket.join(room);
-      (async function () {
-        const f = await getFileContents(room);
-        f && socket.emit("created", f);
-      })();
+        if(socket.auth_token) {
+            console.log("create; " + room);
+            socket.join(room);
+            (async function () {
+                const f = await getFileContents(room);
+                f && socket.emit("created", f);
+            })();
+        }
     });
 
     socket.on("update", function (room, data) {
@@ -68,15 +90,21 @@ io.sockets.on('connection', function (socket) {
   });
   
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(cors());
+app.use("/register", routeServerRegister);
+app.use("/login", routeServerLogin);
+
+app.use(expessjwt({
+    secret: jwtSecret,
+    algorithms: ['HS256']
+}));
 
 app.use('/save', save);
 app.use('/getdocs', docs);
 app.use('/getdata', docsdata);
 app.use('/hello', hello);
-app.use("/register", routeServerRegister);
-app.use("/login", routeServerLogin);
+
 
 // don't show the log when it is test
 if (process.env.NODE_ENV !== 'test') {

@@ -1,10 +1,9 @@
 "use strict";
-
-module.exports = {
-
-    getUser: getUser,
-    checkToken: checkToken
-};
+// MongoDB
+const { MongoClient } = require("mongodb");
+const dsn = require("../db/database");
+const ObjectID = require('mongodb').ObjectId;
+const mongo = new MongoClient(dsn, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const jwt = require('jsonwebtoken');
 
@@ -27,11 +26,13 @@ const DB = require("../db/database.js");
 //  * @async
 //  * @returns void
 //  */
-function getUser(res, body) {
-// function getUser(res, body, status=200) {
-    return new Promise(function(resolve, reject) {
-        let email = body.email;
-        console.log("rthdrthdhtdth " + body.email);
+async function getUser(res, body) {
+        const client = await mongo.connect();
+        const col = client.db("mumin").collection("doc_users");
+        const result = await col.find({user: body.email}, { projection: { user: 1, pwd: 1, group: 1} }).toArray();
+        await client.close();
+        console.log("FROM DB " + result);
+
         /*
         let sql = `
                 SELECT ROWID as id, email, password
@@ -55,17 +56,23 @@ function getUser(res, body) {
             } else {
                 resolve(row);
             }
-        });*/
-
-        return res.status(401).json({
-            errors: {
-                status: 401,
-                source: "/login",
-                title: "User not found",
-                detail: "User with provided email not found."
-            }
         });
-    });
+        */
+        if(!result) {
+            return res.status(401).json({
+                errors: {
+                    status: 401,
+                    source: "/login",
+                    title: "User not found",
+                    detail: "User with provided email not found."
+                }
+            });
+        }
+        else {
+            return result.length > 0 ? result[0]: null;
+        };
+
+
 }
 
 
@@ -101,3 +108,8 @@ function checkToken(req, res, next) {
         });
     }
 }
+
+module.exports = {
+    getUser: getUser,
+    checkToken: checkToken
+};

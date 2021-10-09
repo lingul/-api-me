@@ -44,20 +44,22 @@ router.post('/', (req, res) => {
                 detail: "Email or password missing in request"
             }
         });
-        // res.status(401).json({
-        //     errors: {
-        //         status: 401,
-        //         source: "/",
-        //         title: "Email or password missing",
-        //         detail: "Email or password missing in request"
-        //     }
-        // });
     }
 
     login.getUser(res, req.body)
         .then((dbUserInfo) => {
-            console.log("dbUserInfo från route login.js: ", dbUserInfo);
-            bcrypt.compare(req.body.password, dbUserInfo.password, (err, result) => {
+            if(!dbUserInfo) {
+                return res.status(401).json({
+                    errors: {
+                        status: 401,
+                        source: "/login",
+                        title: "Wrong password",
+                        detail: "Password is incorrect."
+                    }
+                });
+            }
+            console.log("dbUserInfo från route login.js: ", dbUserInfo.pwd);
+            bcrypt.compare(req.body.password, dbUserInfo.pwd, (err, result) => {
                 if (err) { //i e if the comparison goes technically wrong/doesn´t work I think...
                     return res.status(500).json({
                         errors: {
@@ -70,11 +72,10 @@ router.post('/', (req, res) => {
                 }
 
                 if (result) {
-                    let payload = {email: dbUserInfo.email};
+                    let payload = {email: dbUserInfo.user, group: dbUserInfo.group};
 
                     // console.log("dbUserInfo.email från route login.js:", payload);
                     let jwtToken = jwt.sign(payload, jwtSecret, {expiresIn: '15m'});
-
                     return res.status(200).json({
                         data: {
                             status: 200,
@@ -98,14 +99,14 @@ router.post('/', (req, res) => {
             });
         })
         .catch((err) => {
-            // console.log("err från routes/login.js: ", err);
+            console.log("err från routes/login.js: ", err);
             res.status(500).json({
             // return res.status(500).json({
                 errors: {
                     status: 500,
                     source: "/login",
                     title: "Database error",
-                    detail: err
+                    detail: 'db error'
                 }
             });
             // console.log("error från catch error: ", err); //eslint: unreachable code

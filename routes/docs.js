@@ -20,17 +20,19 @@ router.get('/', (req, res, next) => {
     let parse_res;
     (async () => {
         try {
-            parse_res = JSON.parse(JSON.stringify(await findInCollection()));
+            parse_res = JSON.parse(JSON.stringify(req.user.group? 
+                await findInCollection({}):
+                await findInCollection({group: false})));
         } catch (err) {
             console.log(err);
         }
         res.send({mess: parse_res});
     })
     ();
-    async function findInCollection() {
+    async function findInCollection(query) {
         const client = await mongo.connect();
         const col = await client.db("mumin").collection("crowd");
-        const res = await col.find({}, { projection: { _id: 1, filename: 1} }).toArray();
+        const res = await col.find(query, { projection: { _id: 1, filename: 1} }).toArray();
         await client.close();
         return res;
     }

@@ -20,7 +20,7 @@ module.exports = {
         if (res.length === 0) {
             await col.insertMany(setOfData);
         } else {
-            await col.updateOne({filename: setOfData[0].filename}, {$set: {data: setOfData[0].data}});
+            await col.updateOne({filename: setOfData[0].filename}, {$set: {data: setOfData[0].data, group: setOfData[0].group}});
         }
         
         //await col.deleteMany();

@@ -5,7 +5,6 @@ const ObjectID = require('mongodb').ObjectId;
 const mongo = new MongoClient(dsn, { useNewUrlParser: true, useUnifiedTopology: true });
 
 async function addUser(res, body, hashedPassWord) {
-        let data = [body.email, hashedPassWord];
         const client = await mongo.connect();
         const col = await client.db("mumin").collection("doc_users");
         const result = await col.find({user: body.email}, { projection: { _id: 1} }).toArray();
