@@ -12,11 +12,12 @@ const chaiHttp = require('chai-http');
 const assert = require('assert');
 const server = require('../app.js');
 const { exit } = require('process');
+const dsn = require("../db/database");
 
 chai.use(chaiHttp);
 
 
-mongoose.connect('mongodb://localhost/mumin');
+mongoose.connect(dsn);
 mongoose.Promise = global.Promise;
 
 

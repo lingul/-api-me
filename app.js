@@ -12,10 +12,9 @@ const port = process.env.PORT || 1337;
 const bodyParser = require("body-parser");
 const morgan = require('morgan');
 const cors = require('cors');
-const index = require('./routes/index');
-const hello = require('./routes/hello');
 const save = require('./routes/save');
 const docs = require('./routes/docs');
+const graphql = require('./routes/server');
 const docsdata = require('./routes/data');
 const routeServerRegister = require("./routes/register.js");
 const routeServerLogin = require("./routes/login.js");
@@ -103,7 +102,7 @@ app.use(expessjwt({
 app.use('/save', save);
 app.use('/getdocs', docs);
 app.use('/getdata', docsdata);
-app.use('/hello', hello);
+app.use('/graphql', graphql);
 
 
 // don't show the log when it is test

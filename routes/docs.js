@@ -26,6 +26,7 @@ router.get('/', (req, res, next) => {
         } catch (err) {
             console.log(err);
         }
+        console.log("MESS", parse_res);
         res.send({mess: parse_res});
     })
     ();

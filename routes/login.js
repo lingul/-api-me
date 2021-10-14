@@ -75,7 +75,7 @@ router.post('/', (req, res) => {
                     let payload = {email: dbUserInfo.user, group: dbUserInfo.group};
 
                     // console.log("dbUserInfo.email från route login.js:", payload);
-                    let jwtToken = jwt.sign(payload, jwtSecret, {expiresIn: '15m'});
+                    let jwtToken = jwt.sign(payload, jwtSecret, {expiresIn: '30m'});
                     return res.status(200).json({
                         data: {
                             status: 200,
