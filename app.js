@@ -18,6 +18,9 @@ const graphql = require('./routes/server');
 const docsdata = require('./routes/data');
 const routeServerRegister = require("./routes/register.js");
 const routeServerLogin = require("./routes/login.js");
+const printPDF = require("./routes/print.js");
+const mail = require("./routes/mail.js");
+const getpdf = require("./routes/getpdf.js");
 
 const fs = require("fs");
 const path = require("path");
@@ -103,7 +106,9 @@ app.use('/save', save);
 app.use('/getdocs', docs);
 app.use('/getdata', docsdata);
 app.use('/graphql', graphql);
-
+app.use('/print', printPDF);
+app.use('/mail', mail);
+app.use('/getpdf', getpdf);
 
 // don't show the log when it is test
 if (process.env.NODE_ENV !== 'test') {

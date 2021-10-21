@@ -10,7 +10,6 @@ const dsn = require("../db/database");
 const mongo = new MongoClient(dsn, { useNewUrlParser: true, useUnifiedTopology: true });
 
 router.get('/', (req, res) => {
-  console.log("Linnea:", req.user.group);
 
   const schema = buildSchema(`
     scalar JSON

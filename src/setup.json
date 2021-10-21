@@ -1,22 +1,41 @@
 [
-    {
-        "namn": "Mumintrollet",
-        "bor": "Mumindalen"
+    { 
+    "_id": "ObjectId",
+    "filename": "test1",
+    "data": "test1",
+    "group": true
     },
-    {
-        "namn": "Sniff",
-        "bor": "Mumindalen"
+    { 
+        "_id": "ObjectId",
+        "filename": "test2",
+        "data": "test2",
+        "group": true
     },
-    {
-        "namn": "Snusmumriken",
-        "bor": "Mumindalen"
+    { 
+        "_id": "ObjectId",
+        "filename": "test3",
+        "data": "test3",
+        "group": true
     },
-    {
-        "namn": "Snorkfröken",
-        "bor": "Mumindalen"
+    { 
+        "_id": "ObjectId",
+        "filename": "test4",
+        "data": "test4",
+        "group": true
+        },
+
+
+    { 
+    "_id": "ObjectId",
+    "filename": "linnea1",
+    "data": "linnea123",
+    "group": true
     },
-    {
-        "namn2": "Snorkfröken",
-        "bor2": "Mumindalen"
+    { 
+        "_id": "ObjectId",
+        "filename": "linnea",
+        "data": "linnea",
+        "group": false
     }
 ]
+
