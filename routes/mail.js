@@ -21,9 +21,7 @@ router.post('/', (req, res, next) => {
         const mailgun = new Mailgun(formData);
         const mg = mailgun.client({
             username: 'api',
-            key: API_KEY /*,
-            public_key: 'pubkey-ac6344a6a2164a83edc6d315b3157b8d',
-            url: 'https://api.mailgun.net'*/
+            key: API_KEY
         });
         console.log("UTANFÖR");
         mg.messages.create('sandboxad00b18c49cc4918873a27723aa294e2.mailgun.org', {
